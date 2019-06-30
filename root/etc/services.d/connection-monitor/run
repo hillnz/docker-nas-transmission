@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+
+net_check() {
+    curl google.com >/dev/null 2>&1
+    echo $?
+}
+
+# Finish if we can't reach google
+while [ "$(net_check)" == "0" ]; do
+    sleep 20s
+done
+
+echo "Couldn't reach google.com"

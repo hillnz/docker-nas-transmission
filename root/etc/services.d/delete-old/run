@@ -1,0 +1,15 @@
+#!/usr/bin/with-contenv bash
+
+while true; do
+
+    if [[ ! -z "${DELETE_DIR}" ]] && [[ ! -z "${DELETE_DAYS}" ]]; then
+
+        # # Delete old files
+        find "$DELETE_DIR" -type f -mtime +${DELETE_DAYS} -delete
+
+        # # Delete empty dirs
+        find "$DELETE_DIR" -type d -empty -delete
+    fi
+
+    sleep 63m
+done
