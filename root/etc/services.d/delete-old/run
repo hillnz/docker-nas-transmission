@@ -4,7 +4,10 @@ while true; do
 
     if [[ ! -z "${DELETE_DIR}" ]] && [[ ! -z "${DELETE_DAYS}" ]]; then
 
-        # # Delete old files
+        # Delete old files
+        if find "$DELETE_DIR" -type f -mtime +${DELETE_DAYS} | grep .; then
+            echo "^^^ These files are older than ${DELETE_DAYS} days and will be deleted"
+        fi
         find "$DELETE_DIR" -type f -mtime +${DELETE_DAYS} -delete
 
         # # Delete empty dirs
