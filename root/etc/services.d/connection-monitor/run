@@ -1,13 +1,15 @@
 #!/usr/bin/with-contenv bash
 
-net_check() {
-    curl google.com >/dev/null 2>&1
-    echo $?
-}
-
 # Finish if we can't reach google
-while [ "$(net_check)" == "0" ]; do
-    sleep 20s
+errorCount=0
+while (( errorCount < 2 )); do
+    sleep 10s
+    while curl https://google.com >/dev/null 2>&1; do
+        sleep 20s
+        errorCount=0
+    done
+    echo "Failed to request google.com"
+    (( errorCount+=1 ))
 done
 
-echo "Couldn't reach google.com"
+echo "Couldn't reach google.com after ${errorCount} tries"
