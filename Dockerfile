@@ -1,8 +1,12 @@
+# renovate: datasource=docker depName=linuxserver/transmission versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+).+-ls(?<patch>\d+)$
+ARG LS_VERSION=3.00-r2-ls83
 FROM linuxserver/transmission
 
 RUN apk add --no-cache python3
 
-RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl && \
+# renovate: datasource=github-releases depName=ytdl-org/youtube-dl versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+)\.0?(?<patch>\d+)$
+ARG YOUTUBEDL_VERSION=2021.04.01
+RUN curl -L -o /usr/local/bin/youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx /usr/local/bin/youtube-dl
 
 ENV DELETE_DAYS=30
