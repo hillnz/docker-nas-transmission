@@ -5,7 +5,7 @@ FROM linuxserver/transmission:${LS_VERSION}
 RUN apk add --no-cache python3
 
 # renovate: datasource=github-releases depName=ytdl-org/youtube-dl versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+)\.0?(?<patch>\d+)$
-ARG YOUTUBEDL_VERSION=2021.04.07
+ARG YOUTUBEDL_VERSION=2021.04.17
 RUN curl -L -o /usr/local/bin/youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx /usr/local/bin/youtube-dl
 
