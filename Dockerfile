@@ -2,7 +2,8 @@
 ARG LS_VERSION=3.00-r2-ls86
 FROM linuxserver/transmission:${LS_VERSION}
 
-RUN apk add --no-cache python3
+RUN apk add --no-cache python3 && \
+    ln -s /usr/bin/python3 /usr/bin/python
 
 # renovate: datasource=github-releases depName=ytdl-org/youtube-dl versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+)\.0?(?<patch>\d+)$
 ARG YOUTUBEDL_VERSION=2021.04.17
