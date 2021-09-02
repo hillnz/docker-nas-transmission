@@ -1,5 +1,5 @@
 # renovate: datasource=docker depName=linuxserver/transmission versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+).+-ls(?<patch>\d+)$
-ARG LS_VERSION=3.00-r2-ls98
+ARG LS_VERSION=3.00-r2-ls99
 FROM linuxserver/transmission:${LS_VERSION}
 
 RUN apk add --no-cache python3 && \
