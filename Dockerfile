@@ -1,4 +1,4 @@
-FROM debian
+FROM debian AS build
 
 RUN apt-get update && apt-get install -y \
         ca-certificates \
@@ -28,9 +28,12 @@ RUN git clone https://github.com/transmission/transmission && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .. && \
-    make
-    # make install
+    make && \
+    make install
 
-# FROM haugene/transmission-openvpn:4.0
+FROM haugene/transmission-openvpn:4.0
 
-
+COPY --from=build /usr/local/share/transmission /usr/local/share/transmission
+COPY --from=build /usr/local/share/doc/transmission /usr/local/share/doc/transmission
+COPY --from=build /usr/local/bin/transmission-* /usr/local/bin/
+COPY --from=build /usr/local/share/man/man1/transmission-* /usr/local/share/man/man1/
