@@ -1,16 +1,39 @@
-# renovate: datasource=docker depName=linuxserver/transmission versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+).+-ls(?<patch>\d+)$
-ARG LS_VERSION=3.00-r5-ls135
-FROM linuxserver/transmission:${LS_VERSION}
+FROM debian AS build
 
-RUN apk add --no-cache python3 && \
-    ln -s /usr/bin/python3 /usr/bin/python
+RUN apt-get update && apt-get install -y \
+        ca-certificates \
+        cmake \
+        git \
+        g++ \
+        gettext \
+        libcurl4-openssl-dev \
+        libdeflate-dev \
+        libevent-dev \
+        libfmt-dev \
+        libminiupnpc-dev \
+        libnatpmp-dev \
+        libpsl-dev \
+        libssl-dev \
+        ninja-build \
+        nodejs \
+        pkg-config \
+        xz-utils
 
-# renovate: datasource=github-releases depName=ytdl-org/youtube-dl versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+)\.0?(?<patch>\d+)$
-ARG YOUTUBEDL_VERSION=2021.12.17
-RUN curl -L -o /usr/local/bin/youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
-    chmod a+rx /usr/local/bin/youtube-dl
+RUN mkdir -p /build
+WORKDIR /build
 
-ENV DELETE_DAYS=30
-ENV DELETE_TIME=02:30
+RUN git clone https://github.com/transmission/transmission && \
+    cd transmission && \
+    git submodule update --init --recursive && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .. && \
+    make && \
+    make install
 
-COPY root/ /
+FROM haugene/transmission-openvpn:4.0
+
+COPY --from=build /usr/local/share/transmission /usr/local/share/transmission
+COPY --from=build /usr/local/share/doc/transmission /usr/local/share/doc/transmission
+COPY --from=build /usr/local/bin/transmission-* /usr/local/bin/
+COPY --from=build /usr/local/share/man/man1/transmission-* /usr/local/share/man/man1/
