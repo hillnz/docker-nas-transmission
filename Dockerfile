@@ -35,5 +35,5 @@ FROM haugene/transmission-openvpn:4.0
 
 COPY --from=build /usr/local/share/transmission /usr/local/share/transmission
 COPY --from=build /usr/local/share/doc/transmission /usr/local/share/doc/transmission
-COPY --from=build /usr/local/bin/transmission-* /usr/local/bin/
+COPY --from=build /usr/local/bin/transmission-* /usr/bin/
 COPY --from=build /usr/local/share/man/man1/transmission-* /usr/local/share/man/man1/
