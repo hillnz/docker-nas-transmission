@@ -31,7 +31,7 @@ RUN git clone https://github.com/transmission/transmission && \
     make && \
     make install
 
-FROM haugene/transmission-openvpn:4.3
+FROM haugene/transmission-openvpn:5.0
 
 COPY --from=build /usr/local/share/transmission /usr/local/share/transmission
 COPY --from=build /usr/local/share/doc/transmission /usr/local/share/doc/transmission
